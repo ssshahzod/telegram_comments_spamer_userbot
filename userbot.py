@@ -9,6 +9,7 @@
 # Still bugs? https://t.me/wasd_plutonium
 import sys
 import logging
+import random
 from asyncio import sleep
 from datetime import datetime
 from pyrogram import Client, filters
@@ -26,13 +27,28 @@ spam_posts = [TextPost("1st!")]
 # App - stores Pyrogram instance
 app = Client("data/my_account", config_file="data/config.ini", workers=1)
 # Delay - delay between requests
-delay = 0
+delay = 10
 sys.tracebacklimit = 0
 pyrogram_logging = logging.WARNING
 userbot_logging = logging.INFO
 logging.basicConfig(level=pyrogram_logging)
 logger = logging.getLogger("userbot")
 logger.setLevel(userbot_logging)
+
+channel_link = "t.me/ploxie_frazi"
+
+
+'''# @app.on_message(filters.channel)
+async def get_random_post(client, message):
+    try:
+        channel_info = client.get_chat(channel_link)
+        messages = client.get_chat_history(channel_info.id, limit=100)
+        random_message = random.choice(messages)
+        print(random_message)
+
+    except Exception as e:
+        print(f"Got error: {e}")
+'''
 
 
 @app.on_message(filters.channel)
@@ -110,6 +126,8 @@ async def sleep_if_required(_delay):
     if _delay != 0:
         logger.debug(f'Sleeping {_delay}s due to delay')
         await sleep(_delay)
+
+
 try:
     text = 'Started!' if not spam_from_channel \
         else 'Started! Wait for a new message to set up the bot.'
